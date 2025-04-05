@@ -17,7 +17,7 @@ async function main() {
   const MockERC20 = await ethers.getContractFactory("MockERC20");
   const YesToken = await ethers.getContractFactory("YesToken");
   const NoToken = await ethers.getContractFactory("NoToken");
-  const RadishCore = await ethers.getContractFactory("RadishCore");
+  const marketfactoryCore = await ethers.getContractFactory("marketfactoryCore");
 
   // Step 1: Deploy MockERC20
   const mockUSDC = await MockERC20.deploy("USD Coin", "USDC");
@@ -31,22 +31,22 @@ async function main() {
   const noToken = await NoToken.deploy(wallet.address);
   console.log("NoToken deployed to:", noToken.address);
 
-  // Step 4: Deploy RadishCore
-  const radishCore = await RadishCore.deploy(
+  // Step 4: Deploy marketfactoryCore
+  const marketfactoryCore = await marketfactoryCore.deploy(
     mockUSDC.address,
     yesToken.address,
     noToken.address
   );
-  console.log("RadishCore deployed to:", radishCore.address);
+  console.log("marketfactoryCore deployed to:", marketfactoryCore.address);
 
-  // Step 5: Transfer ownership of YesToken and NoToken to RadishCore
-  let tx = await yesToken.transferOwnership(radishCore.address);
+  // Step 5: Transfer ownership of YesToken and NoToken to marketfactoryCore
+  let tx = await yesToken.transferOwnership(marketfactoryCore.address);
   await tx.wait();
-  console.log("YesToken ownership transferred to RadishCore");
+  console.log("YesToken ownership transferred to marketfactoryCore");
 
-  tx = await noToken.transferOwnership(radishCore.address);
+  tx = await noToken.transferOwnership(marketfactoryCore.address);
   await tx.wait();
-  console.log("NoToken ownership transferred to RadishCore");
+  console.log("NoToken ownership transferred to marketfactoryCore");
 
   // Verify contracts (optional, for Etherscan or other block explorers)
   if (network.name !== "hardhat") {
@@ -68,7 +68,7 @@ async function main() {
     });
 
     await run("verify:verify", {
-      address: radishCore.address,
+      address: marketfactoryCore.address,
       constructorArguments: [
         mockUSDC.address,
         yesToken.address,
@@ -77,11 +77,11 @@ async function main() {
     });
   }
 
-  // Step 6: Create a market in RadishCore (optional, for market creation)
+  // Step 6: Create a market in marketfactoryCore (optional, for market creation)
   const question = "Will MrBeast reach 200M YouTube subscribers by March 2024?";
   const endTime = Math.floor(Date.now() / 1000) + 86400 * 30; // 30 days from now
 
-  const createMarketTx = await radishCore.createMarket(question, endTime);
+  const createMarketTx = await marketfactoryCore.createMarket(question, endTime);
   console.log("Market creation transaction:", createMarketTx.hash);
 
   // Wait for the transaction to be confirmed
