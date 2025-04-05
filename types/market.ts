@@ -30,7 +30,7 @@ export interface Market {
   }
   
   export interface PriceBoxProps {
-    type: "buy" | "sell";
+    type: string;
     price: number;
     className: string;
     textColor: string;
@@ -76,4 +76,26 @@ export interface Market {
     target?: number;
     onMint: () => Promise<void>;
     isMintPending: boolean;
+    address?: string;
+  }
   
+  export interface RecentTradesProps {
+    trades: Trade[];
+  }
+  
+  export interface ResolutionDialogProps {
+    isLoading: boolean;
+    onResolve: (proof: string, resolution: boolean) => Promise<void>;
+  }
+  
+  export interface Prediction {
+    marketId: string;
+    marketTitle: string;
+    prediction: number;
+    timestamp: string;
+    endDate: string;
+    currentProbability: number;
+    resolved: boolean;
+    contractAddress?: string;
+    position?: number;
+  } 
