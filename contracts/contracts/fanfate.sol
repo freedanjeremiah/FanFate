@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./YesToken.sol";
 import "./NoToken.sol";
 
-contract marketfactory is Ownable {
+contract Fanfate is Ownable {
     uint256 public marketCount;
 
     address public priceToken;
